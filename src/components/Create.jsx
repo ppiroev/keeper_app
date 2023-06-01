@@ -2,13 +2,14 @@ import React, {useState} from "react";
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Zoom from '@mui/material/Zoom';
+import uniqid from 'uniqid';
 
 
 function Create(props){
 
     const [newNote, setNewNote] = useState({
         title: "",
-        content: ""
+        content: "",
     });
 
     const [isZoomed, setZoomed] = useState(false)
@@ -21,6 +22,7 @@ function Create(props){
             return {
                 title: value,
                 content: prevValue.content
+
         }
         } else if (name === "content") {
             return {

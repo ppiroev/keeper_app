@@ -6,7 +6,7 @@ function Note(props){
     return  <div className="note">
                 <h1>{props.title}</h1>
                 <p>{props.content}</p>
-                <Fab className="deleteButton" onClick={() => {props.onDelete(props.id)}}>
+                <Fab className="deleteButton" onClick={() => {props.onDelete(props.title)}}>
                 <DeleteIcon />
                 </Fab>
             </div>
