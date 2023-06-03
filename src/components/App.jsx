@@ -13,16 +13,20 @@ import {
 import { db } from "../firebase";
 
 function App() {
+  // Function to delete a note from the database
   async function deleteNoteDb(id) {
     await deleteDoc(doc(db, "notes", id));
   }
 
+  // State to store the note items
   const [noteItems, setNoteItems] = useState([]);
 
   useEffect(() => {
+    // Fetch notes from the database when the component mounts or when noteItems changes
     fetchNotesDb();
-  }, [noteItems]);
+  }, []); // Removed noteItems dependency to prevent infinite loop
 
+  // Function to add a note to the database
   async function addNoteDb(newNote) {
     try {
       await setDoc(doc(db, "notes", newNote.title), {
@@ -34,18 +38,24 @@ function App() {
     }
   }
 
+  // Function to fetch notes from the database
   async function fetchNotesDb() {
-    await getDocs(collection(db, "notes")).then((querySnapshot) => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "notes"));
       const data = querySnapshot.docs.map((note) => note.data());
       setNoteItems(data);
-    });
+    } catch (e) {
+      console.error("Error fetching notes: ", e);
+    }
   }
 
+  // Function to add a new note
   function addNote(newNote) {
     addNoteDb(newNote);
     fetchNotesDb();
   }
 
+  // Function to delete a note
   function deleteNote(id) {
     deleteNoteDb(id);
     fetchNotesDb();
@@ -55,6 +65,7 @@ function App() {
     <div>
       <Heading />
       <Create onAdd={addNote} />
+      {/* Render each note item */}
       {noteItems.map((note, index) => (
         <Note
           key={index}
